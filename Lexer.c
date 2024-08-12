@@ -28,21 +28,18 @@ void freeList(token *head){
 
 token* lex(char* input){
     token *tokenized=(token*)malloc(sizeof(token));
-    token *crrnt=tokenized;
     if(tokenized==NULL){
         printf("Memory allocation for tokenized array failed");
         exit(1);
     }
     memset(tokenized,0,sizeof(token));
+    token *crrnt=tokenized;
     
-    int i=0;
     while (*input !='\0'){
         if((*input)==' '){
                input++;           
                continue;
         }
-
-        //~~~Numerals~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         if (isdigit(*input) || (*input)=='.'){
             //recognize a number
             char* start= input;
@@ -64,27 +61,10 @@ token* lex(char* input){
             crrnt->text=(char*)malloc((end - start +1)*sizeof(char));
             strncpy( crrnt->text, start, end-start);
             crrnt->text[end-start]='\0';
-            //input++;
         }
         
         //~~~Variable 'x'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        else if((*input)== 'x'){
-            crrnt->text=(char*)malloc(2*sizeof(char));
-            crrnt->text[0]='x';
-            crrnt->text[1]='\0';
-            input++;
-        }
-
-        //~~~Operators~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        else if ((*input)=='+' ||(*input)=='-' ||(*input)=='*' ||(*input)=='/' ||(*input)=='^'){
-            crrnt->text=(char*)malloc(2*sizeof(char));
-            crrnt->text[0]=*input;
-            crrnt->text[1]='\0';
-            input++;
-        }
-
-        //~~~Parantheses~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        else if((*input)=='(' || (*input)==')'){
+        else if((*input)== 'x'||(*input)=='+' ||(*input)=='-' ||(*input)=='*' ||(*input)=='/' ||(*input)=='^'||(*input)=='(' || (*input)==')'){
             crrnt->text=(char*)malloc(2*sizeof(char));
             crrnt->text[0]=*input;
             crrnt->text[1]='\0';
@@ -95,8 +75,10 @@ token* lex(char* input){
             printf("MALFORMED EXPRESSION");
             exit(EXIT_FAILURE);
         }
-        
-        i++;
+        if(*input!='\0'){
+            crrnt->next=(token*)malloc(sizeof(token));
+            crrnt=crrnt->next;
+        }
     }
     return tokenized;
 }
