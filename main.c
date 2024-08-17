@@ -4,6 +4,7 @@ int main(void){
     token *curr, *erase;
     char input[]="sin(x^2)+23*ln(x+57)+12";
     curr=lex(input);
+    erase=curr;
 
     printf("input: %s\n",input);
     while(curr!=NULL){
@@ -11,6 +12,6 @@ int main(void){
         curr=curr->next;
     }
 
-    //freeList(erase);
+    freeList(erase);
     return(0);
 }
