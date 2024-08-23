@@ -7,7 +7,11 @@ double parse(char *input){
     tokenizedList=lex(input);
     crntToken=tokenizedList;
 
-    FILE file=fopen(parser.c);
+    FILE *file=fopen(parser.c);
+    if(file==NULL){
+      perror("Could not open file for editing");
+      return;
+    }
     
 
     while(crntToken!=NULL){
